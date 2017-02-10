@@ -3,6 +3,8 @@
 import json
 import os
 
+import yaml
+
 from parameter import Parameter
 
 
@@ -32,6 +34,13 @@ class AtomicTemplate(object):
         return json.dumps(
             t, indent=indent, sort_keys=sort_keys, separators=separators
         )
+
+    def to_yaml(self, default_flow_style=False):
+        t = {
+            "Parameters": self._parameters,
+            "Resources": self._resources
+        }
+        return yaml.safe_dump(t, default_flow_style=default_flow_style)
 
     @property
     def _parameters(self):
