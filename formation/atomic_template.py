@@ -26,8 +26,8 @@ class AtomicTemplate(object):
 
     def to_json(self, indent=4, sort_keys=True, separators=(',', ': ')):
         t = {
-            "Parameters": self.parameters(),
-            "Resources": self.resources()
+            "Parameters": self._parameters,
+            "Resources": self._resources
         }
         return json.dumps(
             t, indent=indent, sort_keys=sort_keys, separators=separators
