@@ -5,6 +5,7 @@ import os
 
 import yaml
 
+from . import ref
 from parameter import Parameter
 
 
@@ -43,60 +44,42 @@ class AtomicTemplate(object):
         return yaml.safe_dump(t, default_flow_style=default_flow_style)
 
     @property
-    def _parameters(self):
-        properties = get_properties(
-            self.name, self.required_properties, self.properties
-        )
-        parameters = get_parameters(self.name, properties)
-        return parameters
+    def _parameterised_properties(self):
+        return {
+            prop_name: prop_value
+            for prop_name, prop_value in self._properties.items()
+            if isinstance(prop_value, Parameter)
+        }
 
     @property
-    def _resources(self, temp_name=None):
-        name = temp_name if temp_name else self.name
-        properties = get_properties(
-            name, self.required_properties, self.properties
-        )
-        resource = get_resource(name, self.resource_type, properties)
-        return resource
-
-
-def get_properties(name, required_properties, user_properties):
-    properties = {
-        prop: Parameter()
-        for prop in required_properties
-    }
-    properties.update(user_properties)
-    return properties
-
-
-def get_parameters(resource_name, properties):
-    parameterised_properties = {
-        prop_name: prop_value
-        for prop_name, prop_value in properties.items()
-        if isinstance(prop_value, Parameter)
-    }
-    parameters = {
-        "".join([resource_name, prop_name]): {
-            "Type": prop_value.param_type
+    def _parameters(self):
+        return {
+            "".join([self.name, prop_name]): prop_value.get_representation()
+            for prop_name, prop_value in self._parameterised_properties.items()
         }
-        for prop_name, prop_value in parameterised_properties.items()
-    }
-    return parameters
 
-
-def get_resource(name, resource_type, properties):
-    # Maybe roll this into a couple of dict comps?
-    for prop_name, prop_value in properties.items():
-        if isinstance(prop_value, Parameter):
-            # TODO: changing the thing we're iterating over seems dangerous
-            # TODO: Change Ref to that ref function
-            properties[prop_name] = {"Ref": "".join([name, prop_name])}
-    return {
-        name: {
-            "Type": resource_type,
-            "Properties": properties
+    @property
+    def _properties(self):
+        properties = {
+            prop: Parameter()
+            for prop in self.required_properties
         }
-    }
+        properties.update(self.properties)
+        return properties
+
+    @property
+    def _resources(self):
+        properties = self._properties
+        properties.update({
+            prop_name: ref("".join([self.name, prop_name]))
+            for prop_name in self._parameterised_properties
+        })
+        return {
+            self.name: {
+                "Type": self.resource_type,
+                "Properties": properties
+            }
+        }
 
 
 def get_required_properties(resource_data):

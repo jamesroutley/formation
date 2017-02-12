@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 
 class Parameter(object):
@@ -17,3 +18,16 @@ class Parameter(object):
                 self.param_type
             )
         )
+
+    # TODO: change this name
+    def get_representation(self):
+        representation = {
+            "Type": self.param_type,
+            "Default": self.default,
+            "AllowedValues": self.allowed_values,
+            "Description": self.description
+        }
+        representation = {
+            k: v for k, v in representation.items() if v is not None
+        }
+        return representation

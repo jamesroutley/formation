@@ -31,7 +31,15 @@ from formation.atomic_template import AtomicTemplate
 
 t = Template()
 vpc = AtomicTemplate("MyVPC", "RDS::DBInstance")
-vpc1 = AtomicTemplate("MyVPC", "EC2::VPC")
+vpc1 = AtomicTemplate(
+    "MyVPC",
+    "EC2::VPC",
+    properties={
+        "EnableDnsSupport": Parameter(
+            default=True, description="my description"
+        )
+    }
+)
 
 t.merge(vpc)
 t.merge(vpc1)

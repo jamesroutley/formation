@@ -9,14 +9,6 @@ import yaml
 from atomic_template import AtomicTemplate
 
 
-def ref(data):
-    return {"Ref": data}
-
-
-def get_att(data, attribute):
-    return {"Fn::GetAtt": [data, attribute]}
-
-
 class Template(object):
 
     def __init__(self):
