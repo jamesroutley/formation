@@ -8,6 +8,7 @@ setup(
     version="0.1.0",
     author="James Routley",
     author_email="jroutley@gmail.com",
+    license="Apache2",
     packages=[
         "formation"
     ],
