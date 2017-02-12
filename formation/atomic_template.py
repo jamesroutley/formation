@@ -81,7 +81,6 @@ def get_parameters(resource_name, properties):
         }
         for prop_name, prop_value in parameterised_properties.items()
     }
-    # import ipdb; ipdb.set_trace()
     return parameters
 
 
