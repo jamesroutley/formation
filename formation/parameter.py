@@ -19,8 +19,12 @@ class Parameter(object):
             )
         )
 
-    # TODO: change this name
-    def get_representation(self):
+    @property
+    def template(self):
+        """
+        Returns a dict representation of the parameter.
+
+        """
         representation = {
             "Type": self.param_type,
             "Default": self.default,

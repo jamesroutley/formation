@@ -41,7 +41,9 @@ vpc1 = AtomicTemplate(
     }
 )
 
+import ipdb; ipdb.set_trace()
+
 t.merge(vpc)
 t.merge(vpc1)
 
-print t.to_json()
+print vpc1.to_json()

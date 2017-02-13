@@ -6,7 +6,7 @@ import json
 
 import yaml
 
-from atomic_template import AtomicTemplate
+from .atomic_template import AtomicTemplate
 
 
 class Template(object):
