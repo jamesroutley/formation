@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import json
-import os
 
 import yaml
 
 from . import ref
+from .resource_specification import ResourceSpecification
 from parameter import Parameter
 
 
@@ -15,14 +15,6 @@ class AtomicTemplate(object):
         self.name = name
         self.resource_type = "::".join(["AWS", resource_type])
         self.properties = {} if properties is None else properties
-
-        data_file_path = os.path.join(
-            os.path.dirname(__file__), "data", "resource-specification.json"
-        )
-        with open(data_file_path) as f:
-            data = json.load(f)
-        resource_data = data["ResourceTypes"][self.resource_type]
-        self.required_properties = get_required_properties(resource_data)
 
     def __repr__(self):
         return "AtomicTemplate({0})".format(self.name)
@@ -62,10 +54,17 @@ class AtomicTemplate(object):
     def _properties(self):
         properties = {
             prop: Parameter()
-            for prop in self.required_properties
+            for prop in self._required_properties
         }
         properties.update(self.properties)
         return properties
+
+    @property
+    def _required_properties(self):
+        resource_specification = ResourceSpecification()
+        return resource_specification.get_required_properties(
+            self.resource_type
+        )
 
     @property
     def _resources(self):
@@ -80,12 +79,3 @@ class AtomicTemplate(object):
                 "Properties": properties
             }
         }
-
-
-def get_required_properties(resource_data):
-    required_properties = [
-        prop_name
-        for prop_name, prop_details in resource_data["Properties"].items()
-        if prop_details["Required"]
-    ]
-    return required_properties
