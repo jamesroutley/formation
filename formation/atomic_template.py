@@ -4,7 +4,8 @@ import json
 
 import yaml
 
-from . import ref
+from . import get_att, ref
+from .output_specification import OutputSpecification
 from .resource_specification import ResourceSpecification
 from .parameter import Parameter
 
@@ -38,6 +39,24 @@ class AtomicTemplate(object):
         Prepends the resource name to string and returns the result.
         """
         return "".join([self.name, string])
+
+    @property
+    def _outputs(self):
+        output_specification = OutputSpecification()
+        attributes = output_specification.get_attributes(self.resource_type)
+        outputs = {
+            self._namespace(attribute["Attribute"]): {
+                "Description": attribute["Description"],
+                "Value": get_att(self.name, attribute["Attribute"])
+            }
+            for attribute in attributes
+        }
+        refs = output_specification.get_refs(self.resource_type)
+        outputs[self._namespace("Ref")] = {
+            "Description": refs["Reference Value"],
+            "Value": ref(self.name)
+        }
+        return outputs
 
     @property
     def _parameterised_properties(self):
@@ -79,7 +98,8 @@ class AtomicTemplate(object):
     def _template(self):
         template = {
             "Parameters": self._parameters,
-            "Resources": self._resources
+            "Resources": self._resources,
+            "Outputs": self._outputs
         }
         return template
 

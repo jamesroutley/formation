@@ -1,0 +1,370 @@
+{
+    "AWS::ApiGateway::RestApi": [
+        {
+            "Attribute": "RootResourceId",
+            "Description": "The root resource ID for a RestApi resource.\nExample:\n                        a0bc123d4e"
+        }
+    ],
+    "AWS::CloudFormation::Stack": [
+        {
+            "Attribute": "Outputs.NestedStackOutputName",
+            "Description": "Output value from the nested stack that you specified, where\n                           NestedStackOutputName is the name of the\n                        output value."
+        }
+    ],
+    "AWS::CloudFormation::WaitCondition": [
+        {
+            "Attribute": "Data",
+            "Description": "A JSON format string containing the UniqueId and Data values from the wait condition\n                        signal(s) for the specified wait condition. For more information about wait condition signals,\n                        see Wait Condition Signal JSON\n                    Format.\nExample for wait condition with 2 signals:\n{\"Signal1\":\"Step 1 complete.\",\"Signal2\":\"Step 2 complete.\"}"
+        }
+    ],
+    "AWS::CloudFront::Distribution": [
+        {
+            "Attribute": "DomainName",
+            "Description": "Example: d2fadu0nynjpfn.cloudfront.net"
+        }
+    ],
+    "AWS::Config::ConfigRule": [
+        {
+            "Attribute": "Arn",
+            "Description": "Example:\n                           arn:aws:config:us-east-1:123456789012:config-rule/config-rule-a1bzhi"
+        },
+        {
+            "Attribute": "ConfigRuleId",
+            "Description": "Example: config-rule-a1bzhi"
+        },
+        {
+            "Attribute": "Compliance.Type",
+            "Description": "Example:\n                        COMPLIANT"
+        }
+    ],
+    "AWS::DirectoryService::MicrosoftAD and AWS::DirectoryService::SimpleAD": [
+        {
+            "Attribute": "Alias",
+            "Description": "The alias for a directory.\nExample: d-12373a053a or\n                           alias4-mydirectory-12345abcgmzsk (if you have the\n                           CreateAlias property set to true)"
+        },
+        {
+            "Attribute": "DnsIpAddresses",
+            "Description": "The IP addresses of the DNS servers for the directory.\nExample: [ \"192.0.2.1\", \"192.0.2.2\" ]"
+        }
+    ],
+    "AWS::DynamoDB::Table": [
+        {
+            "Attribute": "StreamArn",
+            "Description": "The Amazon Resource Name (ARN) of the DynamoDB stream.\nExample:\n                           arn:aws:dynamodb:us-east-1:123456789012:table/testddbstack-myDynamoDBTable-012A1SL7SMP5Q/stream/2015-11-30T20:10:00.000"
+        }
+    ],
+    "AWS::EC2::EIP": [
+        {
+            "Attribute": "AllocationId",
+            "Description": "ID that AWS assigns to represent the allocation of the address for use with Amazon VPC.\n                        Returned only for VPC elastic IP addresses.\nExample: eipalloc-5723d13e"
+        }
+    ],
+    "AWS::EC2::Instance": [
+        {
+            "Attribute": "AvailabilityZone",
+            "Description": "The Availability Zone where the instance that you specified is\n                        launched.\nExample:\nus-east-1b"
+        },
+        {
+            "Attribute": "PrivateDnsName",
+            "Description": "The private DNS name of the instance that you specified.\nExample: ip-10-24-34-0.ec2.internal"
+        },
+        {
+            "Attribute": "PublicDnsName",
+            "Description": "The public DNS name of the specified instance that you specified.\nExample: ec2-107-20-50-45.compute-1.amazonaws.com"
+        },
+        {
+            "Attribute": "PrivateIp",
+            "Description": "The private IP address of the instance that you specified.\nExample: 10.24.34.0"
+        },
+        {
+            "Attribute": "PublicIp",
+            "Description": "The public IP address of the instance that you specified.\nExample: 192.0.2.0"
+        }
+    ],
+    "AWS::EC2::NetworkInterface": [
+        {
+            "Attribute": "PrimaryPrivateIpAddress",
+            "Description": "The primary private IP address of the network interface that you\n                        specified.\nExample: 10.0.0.192"
+        },
+        {
+            "Attribute": "SecondaryPrivateIpAddresses",
+            "Description": "The secondary private IP addresses of the network interface that you\n                        specified.\nExample: [\"10.0.0.161\", \"10.0.0.162\", \"10.0.0.163\"]"
+        }
+    ],
+    "AWS::EC2::SecurityGroup": [
+        {
+            "Attribute": "GroupId",
+            "Description": "The group ID of the specified security group.\nExample: sg-94b3a1f6"
+        }
+    ],
+    "AWS::EC2::Subnet": [
+        {
+            "Attribute": "AvailabilityZone",
+            "Description": "The Availability Zone of the subnet.\nExample: us-east-1a"
+        }
+    ],
+    "AWS::EC2::SubnetNetworkAclAssociation": [
+        {
+            "Attribute": "AssociationId",
+            "Description": "NetworkAcl associationId that is attached to a subnet."
+        }
+    ],
+    "AWS::EC2::VPC": [
+        {
+            "Attribute": "CidrBlock",
+            "Description": "The set of IP addresses for the VPC.\nExample: 10.0.0.0/16"
+        },
+        {
+            "Attribute": "DefaultNetworkAcl",
+            "Description": "The default network ACL ID that is associated with the VPC, which AWS\n                     creates when you create a VPC.\nExample: acl-814dafe3"
+        },
+        {
+            "Attribute": "DefaultSecurityGroup",
+            "Description": "The default security group ID that is associated with the VPC, which\n                        AWS creates when you create a VPC.\nExample: sg-b178e0d3"
+        }
+    ],
+    "AWS::ECS::Service": [
+        {
+            "Attribute": "Name",
+            "Description": "The name of an Amazon ECS service.\nExample: sample-webapp"
+        }
+    ],
+    "AWS::EMR::Cluster": [
+        {
+            "Attribute": "MasterPublicDNS",
+            "Description": "The public DNS name of the master node (instance).\nExample:\n                        ec2-12-123-123-123.us-west-2.compute.amazonaws.com"
+        }
+    ],
+    "AWS::ElastiCache::CacheCluster": [
+        {
+            "Attribute": "ConfigurationEndpoint.Address",
+            "Description": "The DNS address of the configuration endpoint for the Memcached cache\n                        cluster.\nExample:\n                        test.abc12a.cfg.use1.cache.amazonaws.com:11111"
+        },
+        {
+            "Attribute": "ConfigurationEndpoint.Port",
+            "Description": "The port number of the configuration endpoint for the Memcached cache\n                        cluster."
+        },
+        {
+            "Attribute": "RedisEndpoint.Address",
+            "Description": "The DNS address of the configuration endpoint for the Redis cache\n                        cluster.\nExample:\n                        test.abc12a.cfg.use1.cache.amazonaws.com:11111"
+        },
+        {
+            "Attribute": "RedisEndpoint.Port",
+            "Description": "The port number of the configuration endpoint for the Redis cache\n                        cluster."
+        }
+    ],
+    "AWS::ElastiCache::ReplicationGroup": [
+        {
+            "Attribute": "PrimaryEndPoint.Address",
+            "Description": "The DNS address of the primary read-write cache node."
+        },
+        {
+            "Attribute": "PrimaryEndPoint.Port",
+            "Description": "The port number that the primary read-write cache engine is listening\n                        on."
+        },
+        {
+            "Attribute": "ReadEndPoint.Addresses",
+            "Description": "A string with a list of endpoints for the read-only replicas. The order\n                        of the addresses map to the order of the ports from the\n                           ReadEndPoint.Ports attribute.\nExample:\n                           \"[abc12xmy3d1w3hv6-001.rep12a.0001.use1.cache.amazonaws.com,\n                           abc12xmy3d1w3hv6-002.rep12a.0001.use1.cache.amazonaws.com,\n                           abc12xmy3d1w3hv6-003.rep12a.0001.use1.cache.amazonaws.com]\""
+        },
+        {
+            "Attribute": "ReadEndPoint.Ports",
+            "Description": "A string with a list of ports for the read-only replicas. The order of\n                        the ports map to the order of the addresses from the\n                           ReadEndPoint.Addresses attribute.\nExample: \"[6379, 6379, 6379]\""
+        },
+        {
+            "Attribute": "ReadEndPoint.Addresses.List",
+            "Description": "A list of endpoints for the read-only replicas.\nExample:\n                        [\"abc12xmy3d1w3hv6-001.rep12a.0001.use1.cache.amazonaws.com\",\n                           \"abc12xmy3d1w3hv6-002.rep12a.0001.use1.cache.amazonaws.com\",\n                           \"abc12xmy3d1w3hv6-003.rep12a.0001.use1.cache.amazonaws.com\"]"
+        },
+        {
+            "Attribute": "ReadEndPoint.Ports.List",
+            "Description": "A list of ports for the read-only replicas.\nExample: [\"6379\",\"6379\",\"6379\"]"
+        }
+    ],
+    "AWS::ElasticBeanstalk::Environment": [
+        {
+            "Attribute": "EndpointURL",
+            "Description": "The URL to the LoadBalancer for this environment.\nExample:\n                           awseb-myst-myen-132MQC4KRLAMD-1371280482.us-east-1.elb.amazonaws.com"
+        }
+    ],
+    "AWS::ElasticLoadBalancing::LoadBalancer": [
+        {
+            "Attribute": "CanonicalHostedZoneName",
+            "Description": "The name of the Amazon Route\u00a053 hosted zone that is associated with the LoadBalancer.\nExample:\n                           mystack-myelb-15HMABG9ZCN57-1013119603.us-east-1.elb.amazonaws.com"
+        },
+        {
+            "Attribute": "CanonicalHostedZoneNameID",
+            "Description": "The ID of the Amazon Route\u00a053 hosted zone name that is associated with the LoadBalancer.\nExample: Z3DZXE0Q79N41H"
+        },
+        {
+            "Attribute": "DNSName",
+            "Description": "The DNS name for the LoadBalancer.\nExample:\n                           mystack-myelb-15HMABG9ZCN57-1013119603.us-east-1.elb.amazonaws.com"
+        },
+        {
+            "Attribute": "SourceSecurityGroup.GroupName",
+            "Description": "The security group that you can use as part of your inbound rules for your LoadBalancer's\n                        back-end Amazon EC2 application instances.\nExample: amazon-elb"
+        },
+        {
+            "Attribute": "SourceSecurityGroup.OwnerAlias",
+            "Description": "Owner of the source security group.\nExample: amazon-elb-sg"
+        }
+    ],
+    "AWS::ElasticLoadBalancingV2::LoadBalancer": [
+        {
+            "Attribute": "DNSName",
+            "Description": "The DNS name for the application load balancer.\nExample: my-load-balancer-424835706.us-west-2.elb.amazonaws.com"
+        },
+        {
+            "Attribute": "CanonicalHostedZoneID",
+            "Description": "The ID of the Amazon Route\u00a053 hosted zone name that is associated with the load balancer.\nExample: Z2P70J7EXAMPLE"
+        },
+        {
+            "Attribute": "LoadBalancerFullName",
+            "Description": "The full name of the application load balancer.\nExample: app/my-load-balancer/50dc6c495c0c9188"
+        },
+        {
+            "Attribute": "LoadBalancerName",
+            "Description": "The name of the application load balancer.\nExample: my-load-balancer"
+        },
+        {
+            "Attribute": "SecurityGroups",
+            "Description": "The IDs of the security groups for the application load balancer.\nExample: sg-123456a"
+        }
+    ],
+    "AWS::Elasticsearch::Domain": [
+        {
+            "Attribute": "DomainArn",
+            "Description": "The Amazon Resource Name (ARN) of the domain.\nExample:\n                           arn:aws:es:us-west-2:123456789012:domain/mystack-elasti-1ab2cdefghij"
+        },
+        {
+            "Attribute": "DomainEndpoint",
+            "Description": "The domain-specific endpoint that is used to submit index, search, and\n                        data upload requests to an Amazon ES domain.\nExample:\n                           search-mystack-elasti-1ab2cdefghij-ab1c2deckoyb3hofw7wpqa3cm.us-west-2.es.amazonaws.com"
+        }
+    ],
+    "AWS::Events::Rule": [
+        {
+            "Attribute": "Arn",
+            "Description": "The Amazon Resource Name (ARN) of the event rule.\nExample: arn:aws:events:us-east-1:123456789012:rule/example"
+        }
+    ],
+    "AWS::IAM::AccessKey": [
+        {
+            "Attribute": "SecretAccessKey",
+            "Description": "Secret access key for the specified Access Key.\nExample: wJalrXUtnFEMI/K7MDENG/bPxRfiCYzEXAMPLEKEY"
+        }
+    ],
+    "AWS::IAM::Group": [
+        {
+            "Attribute": "Arn",
+            "Description": "Example:\n                           arn:aws:iam::123456789012:group/mystack-mygroup-1DZETITOWEKVO"
+        }
+    ],
+    "AWS::IAM::InstanceProfile": [
+        {
+            "Attribute": "Arn",
+            "Description": "Returns the Amazon Resource Name (ARN) for the instance profile.\nExample:\n                           arn:aws:iam::1234567890:instance-profile/MyProfile-ASDNSDLKJ"
+        }
+    ],
+    "AWS::IAM::Role": [
+        {
+            "Attribute": "Arn",
+            "Description": "Example:\n                        arn:aws:iam::1234567890:role/MyRole-AJJHDSKSDF"
+        }
+    ],
+    "AWS::IAM::User": [
+        {
+            "Attribute": "Arn",
+            "Description": "Example:\n                           arn:aws:iam::123456789012:user/mystack-myuser-1CCXAFG2H2U4D"
+        }
+    ],
+    "AWS::IoT::Certificate": [
+        {
+            "Attribute": "Arn",
+            "Description": "Example:\n                        arn:aws:iot:ap-southeast-2:123456789012:cert/a1234567b89c012d3e4fg567hij8k9l01mno1p23q45678901rs234567890t1u2"
+        }
+    ],
+    "AWS::KMS::Key": [
+        {
+            "Attribute": "Arn",
+            "Description": "The ARN of the AWS KMS key.\nExample: arn:aws:kms:us-west-2:123456789012:key/12a34567-8c90-1defg-af84-0bf06c1747f3."
+        }
+    ],
+    "AWS::Kinesis::Stream": [
+        {
+            "Attribute": "Arn",
+            "Description": "The ARN of the Amazon Kinesis stream.\nExample:\n                           arn:aws:kinesis:us-east-1:123456789012:stream/mystream."
+        }
+    ],
+    "AWS::Lambda::Function": [
+        {
+            "Attribute": "Arn",
+            "Description": "Example:\n                           arn:aws:lambda:us-west-2:123456789012:MyStack-AMILookUp-NT5EUXTNTXXD"
+        }
+    ],
+    "AWS::Lambda::Version": [
+        {
+            "Attribute": "Version",
+            "Description": "The version of a Lambda function version.\nExample: 1"
+        }
+    ],
+    "AWS::Logs::LogGroup": [
+        {
+            "Attribute": "Arn",
+            "Description": "The ARN of the CloudWatch Logs log group.\nExample:\n                           arn:aws:logs:us-east-1:123456789012:log-group:/mystack-testgroup-12ABC1AB12A1:*"
+        }
+    ],
+    "AWS::RDS::DBCluster": [
+        {
+            "Attribute": "Endpoint.Address",
+            "Description": "Connection endpoint for the DB cluster.\nExample:\n                           mystack-mydbcluster-1apw1j4phylrk.cg034hpkmmjt.us-east-1.rds.amazonaws.com"
+        },
+        {
+            "Attribute": "Endpoint.Port",
+            "Description": "The port number on which the DB cluster accepts connections.\nExample: 3306"
+        }
+    ],
+    "AWS::RDS::DBInstance": [
+        {
+            "Attribute": "Endpoint.Address",
+            "Description": "Connection endpoint for the database.\nExample:\n                           mystack-mydb-1apw1j4phylrk.cg034hpkmmjt.us-east-1.rds.amazonaws.com"
+        },
+        {
+            "Attribute": "Endpoint.Port",
+            "Description": "The port number on which the database accepts connections.\nExample: 3306"
+        }
+    ],
+    "AWS::Redshift::Cluster": [
+        {
+            "Attribute": "Endpoint.Address",
+            "Description": "Connection endpoint for the cluster.\nExample:\n                           examplecluster.cg034hpkmmjt.us-east-1.redshift.amazonaws.com"
+        },
+        {
+            "Attribute": "Endpoint.Port",
+            "Description": "Connection port for the cluster.\nExample: 5439"
+        }
+    ],
+    "AWS::S3::Bucket": [
+        {
+            "Attribute": "DomainName",
+            "Description": "The DNS name of the specified bucket.\nExample:\n                        mystack-mybucket-kdwwxmddtr2g.s3.amazonaws.com"
+        },
+        {
+            "Attribute": "WebsiteURL",
+            "Description": "Amazon S3 website endpoint for the specified bucket.\nExample:\n                           http://mystack-mybucket-kdwwxmddtr2g.s3-website-us-east-1.amazonaws.com/"
+        }
+    ],
+    "AWS::SNS::Topic": [
+        {
+            "Attribute": "TopicName",
+            "Description": "The name of an Amazon SNS topic.\nExample: my-sns-topic"
+        }
+    ],
+    "AWS::SQS::Queue": [
+        {
+            "Attribute": "Arn",
+            "Description": "ARN for the specified queue.\nExample:\n                           arn:aws:sqs:us-east-1:123456789012:mystack-myqueue-15PG5C2FC1CW8"
+        },
+        {
+            "Attribute": "QueueName",
+            "Description": "The name of an Amazon SQS queue.\nExample: mystack-myqueue-1VF9BKQH5BJVI"
+        }
+    ]
+}

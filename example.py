@@ -30,8 +30,7 @@ from formation.atomic_template import AtomicTemplate
 # print t.to_json()
 
 t = Template()
-vpc = AtomicTemplate("MyVPC", "RDS::DBInstance")
-vpc1 = AtomicTemplate(
+vpc = AtomicTemplate(
     "MyVPC",
     "EC2::VPC",
     properties={
@@ -41,9 +40,8 @@ vpc1 = AtomicTemplate(
     }
 )
 
-import ipdb; ipdb.set_trace()
-
 t.merge(vpc)
-t.merge(vpc1)
 
-print vpc1.to_json()
+vpc._outputs
+
+print vpc.to_json()
