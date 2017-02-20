@@ -27,7 +27,7 @@ class OutputSpecification(object):
         return data
 
     def get_refs(self, resource_type):
-        return self.ref_specification[resource_type]
+        return self.ref_specification.get(resource_type, [])
 
     def get_attributes(self, resource_type):
-        return self.attribute_specification[resource_type]
+        return self.attribute_specification.get(resource_type, [])
