@@ -2,4 +2,4 @@
 Formation
 =========
 
-Formation is a tool for generating AWS CloudFormation templates. It is currently work in progress and does not have a stable API.
+Formation defines a terse Python syntax which is compiled to CloudFormation. Formation aims to automate the CloudFormation template writing process.
