@@ -29,6 +29,13 @@ class Template(object):
         )
 
     @property
+    def _outputs(self):
+        outputs = {}
+        for template in self._templates:
+            outputs.update(template._outputs)
+        return outputs
+
+    @property
     def _parameters(self):
         parameters = {}
         for template in self._templates:
@@ -47,7 +54,8 @@ class Template(object):
         with unique_atom_names(self._templates):
             template = {
                 "Parameters": self._parameters,
-                "Resources": self._resources
+                "Resources": self._resources,
+                "Outputs": self._outputs
             }
         return template
 
