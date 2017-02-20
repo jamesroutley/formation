@@ -46,14 +46,14 @@ class AtomicTemplate(object):
         attributes = output_specification.get_attributes(self.resource_type)
         outputs = {
             self._namespace(attribute["Attribute"]): {
-                "Description": attribute["Description"],
+                # "Description": attribute["Description"],
                 "Value": get_att(self.name, attribute["Attribute"])
             }
             for attribute in attributes
         }
-        refs = output_specification.get_refs(self.resource_type)
+        # refs = output_specification.get_refs(self.resource_type)
         outputs[self._namespace("Ref")] = {
-            "Description": refs["Reference Value"],
+            # "Description": refs["Reference Value"],
             "Value": ref(self.name)
         }
         return outputs
