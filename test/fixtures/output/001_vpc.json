@@ -1,0 +1,48 @@
+{
+    "Outputs": {
+        "VPCCidrBlock": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "VPC",
+                    "CidrBlock"
+                ]
+            }
+        },
+        "VPCDefaultNetworkAcl": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "VPC",
+                    "DefaultNetworkAcl"
+                ]
+            }
+        },
+        "VPCDefaultSecurityGroup": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "VPC",
+                    "DefaultSecurityGroup"
+                ]
+            }
+        },
+        "VPCRef": {
+            "Value": {
+                "Ref": "VPC"
+            }
+        }
+    },
+    "Parameters": {
+        "VPCCidrBlock": {
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "VPC": {
+            "Properties": {
+                "CidrBlock": {
+                    "Ref": "VPCCidrBlock"
+                }
+            },
+            "Type": "AWS::EC2::VPC"
+        }
+    }
+}

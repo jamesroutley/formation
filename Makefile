@@ -1,4 +1,8 @@
-.PHONY: docs
+.PHONY: docs test
+
+
+test:
+	python setup.py test
 
 docs:
 	rm -f docs/formation.rst

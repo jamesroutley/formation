@@ -16,6 +16,6 @@ setup(
         "formation": "formation"
     },
     setup_requires=["pytest-runner"],
-    tests_requre=["pytest"],
-    tests_suite="test"
+    tests_require=["pytest"],
+    test_suite="test"
 )
