@@ -4,13 +4,26 @@ import json
 
 import yaml
 
-from . import get_att, ref
+# from . import get_att, ref
 from .output_specification import OutputSpecification
 from .resource_specification import ResourceSpecification
 from .parameter import Parameter
 
 
 class AtomicTemplate(object):
+
+    """
+    AtomicTemplate contains a single resource, and its parameters and outputs.
+
+    :param name: The name given to the resource.
+    :type name: str
+    :param resource_type: The AWS resource type, without the "AWS::" prefix.
+        e.g. "EC2::VPC" or "Lambda::Function"
+    :type resource_type: str
+    :param properties: A dict of properties to supply the resource.
+    :type properties: dict
+
+    """
 
     def __init__(self, name, resource_type, properties=None):
         self.name = name
@@ -23,20 +36,57 @@ class AtomicTemplate(object):
     def __repr__(self):
         return "AtomicTemplate({0})".format(self.name)
 
-    def to_json(self, indent=4, sort_keys=True, separators=(',', ': ')):
+    def to_json(
+            self, indent=4, sort_keys=True, separators=(',', ': '),
+            **json_dumps_kwargs
+    ):
+        """
+        Returns the CloudFormation template as a JSON string.
+
+        :param indent: The number of spaces to indent JSON by.
+        :type indent: int
+        :param sort_keys: Whether to sort keys or not.
+        :type sort_keys: bool
+        :param separators: A tuple of separators to use.
+        :type separators: tuple
+        :param json_dumps_kwargs: kwargs to pass on to ``json.dumps``.
+        :type json_dumps_kwargs: kwargs
+        :returns: The CloudFormation template encoded as JSON.
+        :rtype: str
+
+        """
         return json.dumps(
-            self._template, indent=indent,
-            sort_keys=sort_keys, separators=separators
+            self._template, indent=indent, sort_keys=sort_keys,
+            separators=separators, **json_dumps_kwargs
         )
 
-    def to_yaml(self, default_flow_style=False):
+    def to_yaml(self, default_flow_style=False, **yaml_safe_dump_kwargs):
+        """
+        Returns the CloudFormation template as a YAML string.
+
+        :param default_flow_style: Whether to serialize YAML in the block
+            style.
+        :type default_flow_style: bool
+        :param yaml_safe_dump_kwargs: kwargs to pass on to ``yaml.safe_dump``.
+        :type yaml_safe_dump_kwargs: kwargs
+        :returns: The CloudFormation template encoded as YAML.
+        :rtype: str
+
+        """
         return yaml.safe_dump(
-            self._template, default_flow_style=default_flow_style
+            self._template, default_flow_style=default_flow_style,
+            **yaml_safe_dump_kwargs
         )
 
     def _namespace(self, string):
         """
-        Prepends the resource name to string and returns the result.
+        Prepends the resource name to ``string`` and returns the result.
+
+        :param string: A string to prepend the resource name to.
+        :type string: str
+        :returns: A string with the resource name prepended to it.
+        :rtype: str
+
         """
         return "".join([self.name, string])
 
@@ -47,14 +97,14 @@ class AtomicTemplate(object):
         outputs = {
             self._namespace(attribute["Attribute"]): {
                 # "Description": attribute["Description"],
-                "Value": get_att(self.name, attribute["Attribute"])
+                "Value": {"Fn::GetAtt": [self.name, attribute["Attribute"]]}
             }
             for attribute in attributes
         }
         # refs = output_specification.get_refs(self.resource_type)
         outputs[self._namespace("Ref")] = {
             # "Description": refs["Reference Value"],
-            "Value": ref(self.name)
+            "Value": {"Ref", self.name}
         }
         return outputs
 
@@ -84,7 +134,7 @@ class AtomicTemplate(object):
     def _resources(self):
         properties = self.properties
         properties.update({
-            prop_name: ref(self._namespace(prop_name))
+            prop_name: {"Ref", self._namespace(prop_name)}
             for prop_name in self._parameterised_properties
         })
         return {
