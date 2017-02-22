@@ -5,7 +5,7 @@ import json
 from . import RESOURCE_SPECIFICATION_PATH
 
 
-class ResourceSpecification(object):
+class _ResourceSpecification(object):
 
     def __init__(
             self, resource_specification_path=RESOURCE_SPECIFICATION_PATH

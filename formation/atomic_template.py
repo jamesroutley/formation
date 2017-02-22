@@ -4,9 +4,8 @@ import json
 
 import yaml
 
-# from . import get_att, ref
-from .output_specification import OutputSpecification
-from .resource_specification import ResourceSpecification
+from .output_specification import _OutputSpecification
+from .resource_specification import _ResourceSpecification
 from .parameter import Parameter
 
 
@@ -92,7 +91,7 @@ class AtomicTemplate(object):
 
     @property
     def _outputs(self):
-        output_specification = OutputSpecification()
+        output_specification = _OutputSpecification()
         attributes = output_specification.get_attributes(self.resource_type)
         outputs = {
             self._namespace(attribute["Attribute"]): {
@@ -125,7 +124,7 @@ class AtomicTemplate(object):
 
     @property
     def _required_properties(self):
-        resource_specification = ResourceSpecification()
+        resource_specification = _ResourceSpecification()
         return resource_specification.get_required_properties(
             self.resource_type
         )

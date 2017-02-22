@@ -5,7 +5,7 @@ import json
 from . import ATTRIBUTE_SPECIFICATION_PATH, REF_SPECIFICATION_PATH
 
 
-class OutputSpecification(object):
+class _OutputSpecification(object):
 
     def __init__(
             self, attribute_specification_path=ATTRIBUTE_SPECIFICATION_PATH,
