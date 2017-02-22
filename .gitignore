@@ -89,3 +89,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# For preliminary testing only. Remove this before publication.
+example.py
