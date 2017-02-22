@@ -3,6 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
 Formation
 =========
 
@@ -10,7 +11,7 @@ Formation
    :maxdepth: 2
    :caption: Contents:
 
+   readme
    formation
 
-* `API <formation.html>`_
 * :ref:`search`
