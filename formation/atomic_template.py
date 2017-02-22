@@ -104,7 +104,7 @@ class AtomicTemplate(object):
         # refs = output_specification.get_refs(self.resource_type)
         outputs[self._namespace("Ref")] = {
             # "Description": refs["Reference Value"],
-            "Value": {"Ref", self.name}
+            "Value": {"Ref": self.name}
         }
         return outputs
 
@@ -134,7 +134,7 @@ class AtomicTemplate(object):
     def _resources(self):
         properties = self.properties
         properties.update({
-            prop_name: {"Ref", self._namespace(prop_name)}
+            prop_name: {"Ref": self._namespace(prop_name)}
             for prop_name in self._parameterised_properties
         })
         return {
