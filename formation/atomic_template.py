@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+formation.atomic_template implements the AtomicTemplate class.
+
+"""
+
 import json
 
 import yaml
@@ -12,12 +17,15 @@ from .parameter import Parameter
 class AtomicTemplate(object):
 
     """
-    AtomicTemplate contains a single resource, and its parameters and outputs.
+    A template containing a single resource, its parameters and outputs.
+
+    Atomic templates are the smallest unit within Formation, and they can be
+    merged together to form more complex templates.
 
     :param name: The name given to the resource.
     :type name: str
-    :param resource_type: The AWS resource type, without the "AWS::" prefix.
-        e.g. "EC2::VPC" or "Lambda::Function"
+    :param resource_type: The AWS resource type, without the ``AWS::`` prefix.
+        e.g. ``EC2::VPC`` or ``Lambda::Function``
     :type resource_type: str
     :param properties: A dict of properties to supply the resource.
     :type properties: dict

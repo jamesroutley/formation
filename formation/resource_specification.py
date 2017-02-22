@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+formation.resource_specification does not contain anything public.
+
+"""
+
 import json
 
 from . import RESOURCE_SPECIFICATION_PATH

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+formation.output_specification does not contain anything public.
+
+"""
+
 import json
 
 from . import ATTRIBUTE_SPECIFICATION_PATH, REF_SPECIFICATION_PATH
