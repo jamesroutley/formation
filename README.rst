@@ -2,9 +2,7 @@
 Formation
 =========
 
-.. warning::
-
-  Formation is under active development and its API is unstable.
+Warning: Formation is under active development and its API is unstable.
 
 Formation defines a terse Python syntax which compiles to CloudFormation. Formation aims to automate the CloudFormation template writing process.
 
@@ -21,7 +19,7 @@ Formation aims to bring two new features to CloudFormation:
 Automation
 **********
 
-Formation aggressively automates the CloudFormation template writing process. If we wish to create a CloudFormation template containing a VPC, we can write the following:
+Formation aggressively automates the CloudFormation template writing process. If we wish to create a template containing a VPC using native CloudFormation, we can write the following:
 
 .. code-block:: yaml
 
