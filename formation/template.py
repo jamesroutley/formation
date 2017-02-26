@@ -79,13 +79,13 @@ def unique_atom_names(templates):
     old_names = {}
     name_counter = collections.Counter()
     for template in flattened_templates:
-        name_counter.update([template.name])
-        name_count = name_counter[template.name]
+        name_counter.update([template.title])
+        name_count = name_counter[template.title]
         if name_count > 1:
-            temp_name = "".join([template.name, str(name_count - 1)])
-            old_names[temp_name] = template.name
-            template.name = temp_name
+            temp_name = "".join([template.title, str(name_count - 1)])
+            old_names[temp_name] = template.title
+            template.title = temp_name
     yield
     for template in flattened_templates:
-        if template.name in old_names:
-            template.name = old_names[template.name]
+        if template.title in old_names:
+            template.title = old_names[template.title]

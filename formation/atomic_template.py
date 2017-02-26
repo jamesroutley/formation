@@ -33,8 +33,8 @@ class AtomicTemplate(object):
 
     """
 
-    def __init__(self, name, resource_type, properties=None):
-        self.name = name
+    def __init__(self, title, resource_type, properties=None):
+        self.title = title
         self.resource_type = "::".join(["AWS", resource_type])
         properties = {} if properties is None else properties
         _validate_properties(self._required_properties, properties)
@@ -43,7 +43,7 @@ class AtomicTemplate(object):
         )
 
     def __repr__(self):
-        return "AtomicTemplate({0})".format(self.name)
+        return "AtomicTemplate({0})".format(self.title)
 
     def to_json(
             self, indent=4, sort_keys=True, separators=(',', ': '),
@@ -97,7 +97,7 @@ class AtomicTemplate(object):
         :rtype: str
 
         """
-        return "".join([self.name, string])
+        return "".join([self.title, string])
 
     @property
     def _outputs(self):
@@ -106,13 +106,13 @@ class AtomicTemplate(object):
         attributes = resource_specification.get_attributes(self.resource_type)
         outputs = {
             self._namespace(attribute): {
-                "Value": {"Fn::GetAtt": [self.name, attribute]}
+                "Value": {"Fn::GetAtt": [self.title, attribute]}
             }
             for attribute in attributes
         }
         # BUG: not all resources have a Ref value.
         outputs[self._namespace("Ref")] = {
-            "Value": {"Ref": self.name}
+            "Value": {"Ref": self.title}
         }
         return outputs
 
@@ -159,7 +159,7 @@ class AtomicTemplate(object):
 
         """
         return {
-            self.name: {
+            self.title: {
                 "Type": self.resource_type,
                 "Properties":
                     self._resolve_parameterised_properties(self.properties)
