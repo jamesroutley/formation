@@ -5,10 +5,6 @@ formation.atomic_template implements the AtomicTemplate class.
 
 """
 
-# import json
-
-# import yaml
-
 from .base_template import BaseTemplate
 from .exception import InvalidPropertyError
 # from .output_specification import _OutputSpecification

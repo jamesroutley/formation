@@ -2,9 +2,6 @@
 
 import collections
 import contextlib
-# import json
-
-# import yaml
 
 from .atomic_template import AtomicTemplate
 from .base_template import BaseTemplate
