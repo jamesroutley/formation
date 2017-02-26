@@ -24,11 +24,12 @@ class _ResourceSpecification(object):
         return data
 
     def get_required_properties(self, resource_type):
+        # This should return the full property information
         resource_data = \
             self.resource_specification["ResourceTypes"][resource_type]
-        required_properties = [
-            prop_name
+        required_properties = {
+            prop_name: prop_details
             for prop_name, prop_details in resource_data["Properties"].items()
             if prop_details["Required"]
-        ]
+        }
         return required_properties

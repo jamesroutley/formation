@@ -9,6 +9,7 @@ import json
 
 import yaml
 
+from .exception import InvalidPropertyError
 from .output_specification import _OutputSpecification
 from .resource_specification import _ResourceSpecification
 from .parameter import Parameter
@@ -36,6 +37,7 @@ class AtomicTemplate(object):
         self.name = name
         self.resource_type = "::".join(["AWS", resource_type])
         properties = {} if properties is None else properties
+        _validate_properties(self._required_properties, properties)
         self.properties = _get_properties(
             self._required_properties, properties
         )
@@ -116,19 +118,13 @@ class AtomicTemplate(object):
         return outputs
 
     @property
-    def _parameterised_properties(self):
-        return {
-            prop_name: prop_value
-            for prop_name, prop_value in self.properties.items()
-            if isinstance(prop_value, Parameter)
-        }
-
-    @property
     def _parameters(self):
-        return {
-            self._namespace(prop_name): prop_value.template
-            for prop_name, prop_value in self._parameterised_properties.items()
+        parameters = _get_parameters(self.properties)
+        namespaced_parameters = {
+            self._namespace(key): value
+            for key, value in parameters.items()
         }
+        return namespaced_parameters
 
     @property
     def _required_properties(self):
@@ -137,22 +133,46 @@ class AtomicTemplate(object):
             self.resource_type
         )
 
+    def _resolve_parameterised_properties(self, obj):
+        """
+        Recurses through the property dict and replaces ``Parameter`` objects
+        with a Ref to that parameter's title.
+
+        """
+        if isinstance(obj, Parameter):
+            return {"Ref": self._namespace(obj.title)}
+        if isinstance(obj, dict):
+            return {
+                key: self._resolve_parameterised_properties(value)
+                for key, value in obj.items()
+            }
+        if isinstance(obj, list):
+            return [
+                self._resolve_parameterised_properties(item)
+                for item in obj
+            ]
+        return obj
+
     @property
     def _resources(self):
-        properties = self.properties
-        properties.update({
-            prop_name: {"Ref": self._namespace(prop_name)}
-            for prop_name in self._parameterised_properties
-        })
+        """
+        Returns the template's resources.
+
+        """
         return {
             self.name: {
                 "Type": self.resource_type,
-                "Properties": properties
+                "Properties":
+                    self._resolve_parameterised_properties(self.properties)
             }
         }
 
     @property
     def _template(self):
+        """
+        Returns the template.
+
+        """
         template = {
             "Parameters": self._parameters,
             "Resources": self._resources,
@@ -161,10 +181,48 @@ class AtomicTemplate(object):
         return template
 
 
-def _get_properties(required_properties, user_properties):
+def _validate_properties(required_properties, properties):
+    """
+    Raises an exception if required resource properties are not supplied.
+    """
+    required_resource_properties = [
+        name
+        for name, value in required_properties.items()
+        if "Type" in value
+    ]
+    for required_resource_property in required_resource_properties:
+        if required_resource_property not in properties:
+            raise InvalidPropertyError(
+                "The parameter '{0}' cannot be auto-assigned to a "
+                "Parameter.".format(required_resource_property)
+            )
+
+
+def _get_properties(required_properties, properties):
+    """
+    """
     properties = {
-        prop: Parameter()
+        prop: Parameter(title=prop)
         for prop in required_properties
     }
-    properties.update(user_properties)
+    properties.update(properties)
     return properties
+
+
+def _get_parameters(obj):
+    """
+    Returns a dict of the parameter templates, keyed by their titles.
+
+    Recurses through a dictionary searching for
+    ``formation.parameter.Parameter``s.
+    """
+    parameters = {}
+    if isinstance(obj, Parameter):
+        parameters[obj.title] = obj.template
+    if isinstance(obj, dict):
+        for value in obj.values():
+            parameters.update(_get_parameters(value))
+    if isinstance(obj, list):
+        for item in obj:
+            parameters.update(_get_parameters(item))
+    return parameters
