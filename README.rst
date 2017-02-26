@@ -19,7 +19,7 @@ Formation aims to bring two new features to CloudFormation:
 Automation
 **********
 
-Formation aggressively automates the CloudFormation template writing process. If we wish to create a template containing a VPC using native CloudFormation, we can write the following:
+Formation aggressively automates the CloudFormation template writing process. To show this, we first examine a template written in stock CloudFormation. To create a template containing a VPC, we can write the following:
 
 .. code-block:: yaml
 
