@@ -8,4 +8,5 @@ def main():
     return vpc.to_json()
 
 
-print main()
+if __name__ == "__main__":
+    print main()

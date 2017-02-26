@@ -10,7 +10,7 @@ import json
 import yaml
 
 from .exception import InvalidPropertyError
-from .output_specification import _OutputSpecification
+# from .output_specification import _OutputSpecification
 from .resource_specification import _ResourceSpecification
 from .parameter import Parameter
 
@@ -101,18 +101,17 @@ class AtomicTemplate(object):
 
     @property
     def _outputs(self):
-        output_specification = _OutputSpecification()
-        attributes = output_specification.get_attributes(self.resource_type)
+        # output_specification = _OutputSpecification()
+        resource_specification = _ResourceSpecification()
+        attributes = resource_specification.get_attributes(self.resource_type)
         outputs = {
-            self._namespace(attribute["Attribute"]): {
-                # "Description": attribute["Description"],
-                "Value": {"Fn::GetAtt": [self.name, attribute["Attribute"]]}
+            self._namespace(attribute): {
+                "Value": {"Fn::GetAtt": [self.name, attribute]}
             }
             for attribute in attributes
         }
-        # refs = output_specification.get_refs(self.resource_type)
+        # BUG: not all resources have a Ref value.
         outputs[self._namespace("Ref")] = {
-            # "Description": refs["Reference Value"],
             "Value": {"Ref": self.name}
         }
         return outputs

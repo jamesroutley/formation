@@ -17,14 +17,12 @@ class _ResourceSpecification(object):
     ):
         self.resource_specification_path = resource_specification_path
 
-    @property
-    def resource_specification(self):
-        with open(self.resource_specification_path) as f:
-            data = json.load(f)
-        return data
+    def get_attributes(self, resource_type):
+        resource_data = \
+            self.resource_specification["ResourceTypes"][resource_type]
+        return resource_data.get("Attributes", {})
 
     def get_required_properties(self, resource_type):
-        # This should return the full property information
         resource_data = \
             self.resource_specification["ResourceTypes"][resource_type]
         required_properties = {
@@ -33,3 +31,9 @@ class _ResourceSpecification(object):
             if prop_details["Required"]
         }
         return required_properties
+
+    @property
+    def resource_specification(self):
+        with open(self.resource_specification_path) as f:
+            data = json.load(f)
+        return data

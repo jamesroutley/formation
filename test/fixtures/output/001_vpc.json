@@ -24,6 +24,14 @@
                 ]
             }
         },
+        "VPCIpv6CidrBlocks": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "VPC",
+                    "Ipv6CidrBlocks"
+                ]
+            }
+        },
         "VPCRef": {
             "Value": {
                 "Ref": "VPC"
