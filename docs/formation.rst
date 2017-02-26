@@ -17,6 +17,22 @@ formation.atomic_template module
     :undoc-members:
     :show-inheritance:
 
+formation.base_template module
+------------------------------
+
+.. automodule:: formation.base_template
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+formation.exception module
+--------------------------
+
+.. automodule:: formation.exception
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 formation.output_specification module
 -------------------------------------
 

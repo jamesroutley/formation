@@ -2,31 +2,21 @@
 
 import collections
 import contextlib
-import json
+# import json
 
-import yaml
+# import yaml
 
 from .atomic_template import AtomicTemplate
+from .base_template import BaseTemplate
 
 
-class Template(object):
+class Template(BaseTemplate):
 
     def __init__(self):
         self._templates = []
 
     def merge(self, template):
         self._templates.append(template)
-
-    def to_json(self, indent=4, sort_keys=True, separators=(',', ': ')):
-        return json.dumps(
-            self.template, indent=indent,
-            sort_keys=sort_keys, separators=separators
-        )
-
-    def to_yaml(self, default_flow_style=False):
-        return yaml.safe_dump(
-            self.template, default_flow_style=default_flow_style
-        )
 
     @property
     def _outputs(self):
@@ -50,8 +40,8 @@ class Template(object):
         return resources
 
     @property
-    def template(self):
-        with unique_atom_names(self._templates):
+    def _template(self):
+        with _unique_atom_names(self._templates):
             template = {
                 "Parameters": self._parameters,
                 "Resources": self._resources,
@@ -60,7 +50,7 @@ class Template(object):
         return template
 
 
-def flatten(templates):
+def _flatten(templates):
     flattened_templates = []
     for template in templates:
         if isinstance(template, AtomicTemplate):
@@ -68,14 +58,14 @@ def flatten(templates):
         else:
             # TODO: I'd like templates to be private, but accessing it here
             # isn't great.
-            flattened_templates.extend(flatten(template._templates))
+            flattened_templates.extend(_flatten(template._templates))
     return flattened_templates
 
 
 @contextlib.contextmanager
-def unique_atom_names(templates):
+def _unique_atom_names(templates):
     # TODO: look into optimising this.
-    flattened_templates = flatten(templates)
+    flattened_templates = _flatten(templates)
     old_names = {}
     name_counter = collections.Counter()
     for template in flattened_templates:
