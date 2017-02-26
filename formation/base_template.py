@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
 
+import abc
 import json
 
 import yaml
 
 
 class BaseTemplate(object):
+    """
+    BaseTemplate implements methods to return JSON and YAML template strings.
+
+    It is an abstact base class, so cannot be instantiated directly. Inheriting
+    classes should add a variable (or property) ``self._template``, which
+    should be assigned to the template dictionary.
+
+    """
+
+    __metaclass__ = abc.ABCMeta
 
     def to_json(
             self, indent=4, sort_keys=True, separators=(',', ': '),
