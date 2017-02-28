@@ -4,17 +4,14 @@ Formation
 
 Warning: Formation is under active development and its API is unstable.
 
-Formation defines a terse Python syntax which compiles to CloudFormation. Formation aims to automate the CloudFormation template writing process.
+Formation defines a terse Python syntax which compiles to CloudFormation. Formation aims to bring two new features to CloudFormation:
+
+- `Automation`_
+- `Composability`_
 
 
-Motivation
-----------
-
-Formation aims to bring two new features to CloudFormation:
-
-- automation
-- composability
-
+Features
+--------
 
 Automation
 **********
@@ -124,4 +121,50 @@ A few lines of Python produce functionally identical CloudFormation.
 Composability
 *************
 
-TODO
+Stock CloudFormation templates suffer from two problems:
+
+- Complexity. As infrastructure is added, CloudFormation templates grow in size and complexity. Individual templates often become hundreds or thousands of lines long. This leads to templates that are difficult to understand. Systems which are difficult to understand are more error prone.
+- Reusability. Sections of code are often repeated across CloudFormation templates. This is wasteful, and any changes need to be made in multiple places.
+
+We can solve both these problems by modularising CloudFormation templates. Large templates can be broken down into smaller chunks, and reusable pieces of code can be refactored out. Modularity isn't natively supported in CloudFormation. Small, reusable templates can be written, but the only way to combine them is by copying and pasting their contents. Formation's composability gives you the power to write modular templates and combine them programatically.
+
+.. code-block:: python
+
+  >>> from formation.atomic_template import AtomicTemplate
+  >>> from formation.template import Template
+
+  >>> vpc = AtomicTemplate("VPC", "EC2::VPC")
+  >>> subnet = AtomicTemplate("Subnet", "EC2::Subnet")
+  >>> network = Template()
+  >>> network.merge(vpc)
+  >>> network.merge(subnet)
+  >>> print network.to_yaml()
+  Outputs:
+    SubnetAvailabilityZone:
+      Value:
+        Fn::GetAtt:
+        - Subnet
+        - AvailabilityZone
+    ...  # Output truncated
+  Parameters:
+    SubnetCidrBlock:
+      Type: String
+    SubnetVpcId:
+      Type: String
+    VPCCidrBlock:
+      Type: String
+  Resources:
+    Subnet:
+      Properties:
+        CidrBlock:
+          Ref: SubnetCidrBlock
+        VpcId:
+          Ref: SubnetVpcId
+      Type: AWS::EC2::Subnet
+    VPC:
+      Properties:
+        CidrBlock:
+          Ref: VPCCidrBlock
+      Type: AWS::EC2::VPC
+
+In this example, two modularised templates, ``vpc`` and ``subnet`` are composed into a single ``network`` template.
