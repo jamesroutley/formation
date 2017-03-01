@@ -7,48 +7,37 @@ from formation.exception import InvalidPropertyError
 from formation.parameter import Parameter
 
 
-@pytest.mark.parametrize(
-    "required_properties,user_properties,expected_output",
-    [
-        (
-            {
-                "Code": {
-                    "Documentation": "<truncated>",
-                    "Required": True,
-                    "PrimitiveType": "String",
-                    "UpdateType": "Immutable"
-                }
-            },
-            {},
-            None
-        ),
-        (
-            {
-                "Code": {
-                    "Documentation": "<truncated>",
-                    "Required": True,
-                    "Type": "Code",
-                    "UpdateType": "Mutable"
-                }
-            },
-            {},
-            InvalidPropertyError
-        )
-    ]
-)
-def test_validate_properties(
-        required_properties, user_properties, expected_output
-):
-    if expected_output and issubclass(expected_output, Exception):
-        with pytest.raises(expected_output):
-            formation.atomic_template._validate_properties(
-                required_properties, user_properties
-            )
-    else:
-        output = formation.atomic_template._validate_properties(
-            required_properties, user_properties
-        )
-        assert output == expected_output
+@pytest.mark.parametrize("properties,resource_title,expected_output", [
+    # Flat dict of parameters.
+    (
+        {"A": Parameter("A"), "B": Parameter("B"), "C": "C"},
+        "Title",
+        {"TitleA": {"Type": "String"}, "TitleB": {"Type": "String"}}
+    ),
+    # List of parameters
+    (
+        {"A": [Parameter("B"), Parameter("C")]},
+        "Title",
+        {"TitleB": {"Type": "String"}, "TitleC": {"Type": "String"}}
+    ),
+    # Nested dict of parameters
+    (
+        {"A": {"B": Parameter("B"), "C": Parameter("C")}},
+        "Title",
+        {"TitleB": {"Type": "String"}, "TitleC": {"Type": "String"}}
+    ),
+    # Nested list and dict
+    (
+        {"A": {"B": [Parameter("C")], "D": {"E": Parameter("E")}}},
+        "Title",
+        {"TitleC": {"Type": "String"}, "TitleE": {"Type": "String"}}
+    )
+])
+def test_get_parameters(properties, resource_title, expected_output):
+    output = formation.atomic_template._get_parameters(
+        properties, resource_title
+    )
+    assert output == expected_output
 
 
 @pytest.mark.parametrize(
@@ -102,34 +91,45 @@ def test_get_properties(required_properties, user_properties, expected_output):
     assert output == expected_output
 
 
-@pytest.mark.parametrize("properties,resource_title,expected_output", [
-    # Flat dict of parameters.
-    (
-        {"A": Parameter("A"), "B": Parameter("B"), "C": "C"},
-        "Title",
-        {"TitleA": {"Type": "String"}, "TitleB": {"Type": "String"}}
-    ),
-    # List of parameters
-    (
-        {"A": [Parameter("B"), Parameter("C")]},
-        "Title",
-        {"TitleB": {"Type": "String"}, "TitleC": {"Type": "String"}}
-    ),
-    # Nested dict of parameters
-    (
-        {"A": {"B": Parameter("B"), "C": Parameter("C")}},
-        "Title",
-        {"TitleB": {"Type": "String"}, "TitleC": {"Type": "String"}}
-    ),
-    # Nested list and dict
-    (
-        {"A": {"B": [Parameter("C")], "D": {"E": Parameter("E")}}},
-        "Title",
-        {"TitleC": {"Type": "String"}, "TitleE": {"Type": "String"}}
-    )
-])
-def test_get_parameters(properties, resource_title, expected_output):
-    output = formation.atomic_template._get_parameters(
-        properties, resource_title
-    )
-    assert output == expected_output
+@pytest.mark.parametrize(
+    "required_properties,user_properties,expected_output",
+    [
+        (
+            {
+                "Code": {
+                    "Documentation": "<truncated>",
+                    "Required": True,
+                    "PrimitiveType": "String",
+                    "UpdateType": "Immutable"
+                }
+            },
+            {},
+            None
+        ),
+        (
+            {
+                "Code": {
+                    "Documentation": "<truncated>",
+                    "Required": True,
+                    "Type": "Code",
+                    "UpdateType": "Mutable"
+                }
+            },
+            {},
+            InvalidPropertyError
+        )
+    ]
+)
+def test_validate_properties(
+        required_properties, user_properties, expected_output
+):
+    if expected_output and issubclass(expected_output, Exception):
+        with pytest.raises(expected_output):
+            formation.atomic_template._validate_properties(
+                required_properties, user_properties
+            )
+    else:
+        output = formation.atomic_template._validate_properties(
+            required_properties, user_properties
+        )
+        assert output == expected_output
