@@ -73,12 +73,7 @@ class AtomicTemplate(BaseTemplate):
 
     @property
     def _parameters(self):
-        parameters = _get_parameters(self.properties)
-        namespaced_parameters = {
-            self._namespace(key): value
-            for key, value in parameters.items()
-        }
-        return namespaced_parameters
+        return _get_parameters(self.properties, self.title)
 
     @property
     def _required_properties(self):
@@ -175,20 +170,27 @@ def _get_properties(required_properties, user_properties):
     return properties
 
 
-def _get_parameters(obj):
+def _get_parameters(properties, resource_title):
     """
     Returns a dict of the parameter templates, keyed by their titles.
 
     Recurses through a dictionary searching for
     ``formation.parameter.Parameter``s.
     """
-    parameters = {}
-    if isinstance(obj, Parameter):
-        parameters[obj.title] = obj.template
-    if isinstance(obj, dict):
-        for value in obj.values():
-            parameters.update(_get_parameters(value))
-    if isinstance(obj, list):
-        for item in obj:
-            parameters.update(_get_parameters(item))
-    return parameters
+    def _recursively_get_parameters(obj):
+        parameters = {}
+        if isinstance(obj, Parameter):
+            parameters[_namespace(resource_title, obj.title)] = obj.template
+        if isinstance(obj, dict):
+            for value in obj.values():
+                parameters.update(_recursively_get_parameters(value))
+        if isinstance(obj, list):
+            for item in obj:
+                parameters.update(_recursively_get_parameters(item))
+        return parameters
+
+    return _recursively_get_parameters(properties)
+
+
+def _namespace(resource_title, item_title):
+    return "".join([resource_title, item_title])

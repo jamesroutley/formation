@@ -102,28 +102,34 @@ def test_get_properties(required_properties, user_properties, expected_output):
     assert output == expected_output
 
 
-@pytest.mark.parametrize("test_input,expected_output", [
+@pytest.mark.parametrize("properties,resource_title,expected_output", [
     # Flat dict of parameters.
     (
-        {"a": Parameter("a"), "b": Parameter("b"), "c": "c"},
-        {"a": {"Type": "String"}, "b": {"Type": "String"}}
+        {"A": Parameter("A"), "B": Parameter("B"), "C": "C"},
+        "Title",
+        {"TitleA": {"Type": "String"}, "TitleB": {"Type": "String"}}
     ),
     # List of parameters
     (
-        {"a": [Parameter("b"), Parameter("c")]},
-        {"b": {"Type": "String"}, "c": {"Type": "String"}}
+        {"A": [Parameter("B"), Parameter("C")]},
+        "Title",
+        {"TitleB": {"Type": "String"}, "TitleC": {"Type": "String"}}
     ),
     # Nested dict of parameters
     (
-        {"a": {"b": Parameter("b"), "c": Parameter("c")}},
-        {"b": {"Type": "String"}, "c": {"Type": "String"}}
+        {"A": {"B": Parameter("B"), "C": Parameter("C")}},
+        "Title",
+        {"TitleB": {"Type": "String"}, "TitleC": {"Type": "String"}}
     ),
     # Nested list and dict
     (
-        {"a": {"b": [Parameter("c")], "d": {"e": Parameter("e")}}},
-        {"c": {"Type": "String"}, "e": {"Type": "String"}}
+        {"A": {"B": [Parameter("C")], "D": {"E": Parameter("E")}}},
+        "Title",
+        {"TitleC": {"Type": "String"}, "TitleE": {"Type": "String"}}
     )
 ])
-def test_get_parameters(test_input, expected_output):
-    output = formation.atomic_template._get_parameters(test_input)
+def test_get_parameters(properties, resource_title, expected_output):
+    output = formation.atomic_template._get_parameters(
+        properties, resource_title
+    )
     assert output == expected_output
