@@ -2,8 +2,53 @@
 
 import pytest
 
-from formation.parameter import Parameter
 import formation.atomic_template
+from formation.exception import InvalidPropertyError
+from formation.parameter import Parameter
+
+
+@pytest.mark.parametrize(
+    "required_properties,user_properties,expected_output",
+    [
+        (
+            {
+                "Code": {
+                    "Documentation": "<truncated>",
+                    "Required": True,
+                    "PrimitiveType": "String",
+                    "UpdateType": "Immutable"
+                }
+            },
+            {},
+            None
+        ),
+        (
+            {
+                "Code": {
+                    "Documentation": "<truncated>",
+                    "Required": True,
+                    "Type": "Code",
+                    "UpdateType": "Mutable"
+                }
+            },
+            {},
+            InvalidPropertyError
+        )
+    ]
+)
+def test_validate_properties(
+        required_properties, user_properties, expected_output
+):
+    if expected_output and issubclass(expected_output, Exception):
+        with pytest.raises(expected_output):
+            formation.atomic_template._validate_properties(
+                required_properties, user_properties
+            )
+    else:
+        output = formation.atomic_template._validate_properties(
+            required_properties, user_properties
+        )
+        assert output == expected_output
 
 
 @pytest.mark.parametrize(
