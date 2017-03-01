@@ -130,21 +130,30 @@ class AtomicTemplate(BaseTemplate):
         return template
 
 
-def _validate_properties(required_properties, properties):
+def _namespace(resource_title, item_title):
+    return "".join([resource_title, item_title])
+
+
+def _get_parameters(properties, resource_title):
     """
-    Raises error if required resource-specific properties are not supplied.
+    Returns a dict of the parameter templates, keyed by their titles.
+
+    Recurses through a dictionary searching for
+    ``formation.parameter.Parameter``s.
     """
-    required_resource_specific_properties = [
-        name
-        for name, value in required_properties.items()
-        if "Type" in value
-    ]
-    for required_resource_property in required_resource_specific_properties:
-        if required_resource_property not in properties:
-            raise InvalidPropertyError(
-                "The resource-specific parameter '{0}' cannot be auto-assigned"
-                "to a Parameter.".format(required_resource_property)
-            )
+    def _recursively_get_parameters(obj):
+        parameters = {}
+        if isinstance(obj, Parameter):
+            parameters[_namespace(resource_title, obj.title)] = obj.template
+        if isinstance(obj, dict):
+            for value in obj.values():
+                parameters.update(_recursively_get_parameters(value))
+        if isinstance(obj, list):
+            for item in obj:
+                parameters.update(_recursively_get_parameters(item))
+        return parameters
+
+    return _recursively_get_parameters(properties)
 
 
 def _get_properties(required_properties, user_properties):
@@ -170,27 +179,18 @@ def _get_properties(required_properties, user_properties):
     return properties
 
 
-def _get_parameters(properties, resource_title):
+def _validate_properties(required_properties, properties):
     """
-    Returns a dict of the parameter templates, keyed by their titles.
-
-    Recurses through a dictionary searching for
-    ``formation.parameter.Parameter``s.
+    Raises error if required resource-specific properties are not supplied.
     """
-    def _recursively_get_parameters(obj):
-        parameters = {}
-        if isinstance(obj, Parameter):
-            parameters[_namespace(resource_title, obj.title)] = obj.template
-        if isinstance(obj, dict):
-            for value in obj.values():
-                parameters.update(_recursively_get_parameters(value))
-        if isinstance(obj, list):
-            for item in obj:
-                parameters.update(_recursively_get_parameters(item))
-        return parameters
-
-    return _recursively_get_parameters(properties)
-
-
-def _namespace(resource_title, item_title):
-    return "".join([resource_title, item_title])
+    required_resource_specific_properties = [
+        name
+        for name, value in required_properties.items()
+        if "Type" in value
+    ]
+    for required_resource_property in required_resource_specific_properties:
+        if required_resource_property not in properties:
+            raise InvalidPropertyError(
+                "The resource-specific parameter '{0}' cannot be auto-assigned"
+                "to a Parameter.".format(required_resource_property)
+            )
