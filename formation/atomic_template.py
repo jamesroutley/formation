@@ -82,26 +82,6 @@ class AtomicTemplate(BaseTemplate):
             self.resource_type
         )
 
-    def _resolve_parameterised_properties(self, obj):
-        """
-        Recurses through the property dict and replaces ``Parameter`` objects
-        with a Ref to that parameter's title.
-
-        """
-        if isinstance(obj, Parameter):
-            return {"Ref": self._namespace(obj.title)}
-        if isinstance(obj, dict):
-            return {
-                key: self._resolve_parameterised_properties(value)
-                for key, value in obj.items()
-            }
-        if isinstance(obj, list):
-            return [
-                self._resolve_parameterised_properties(item)
-                for item in obj
-            ]
-        return obj
-
     @property
     def _resources(self):
         """
@@ -112,7 +92,9 @@ class AtomicTemplate(BaseTemplate):
             self.title: {
                 "Type": self.resource_type,
                 "Properties":
-                    self._resolve_parameterised_properties(self.properties)
+                    _resolve_parameterised_properties(
+                        self.properties, self.title
+                    )
             }
         }
 
@@ -177,6 +159,29 @@ def _get_properties(required_properties, user_properties):
     }
     properties.update(user_properties)
     return properties
+
+
+def _resolve_parameterised_properties(properties, resource_title):
+    """
+    Recurses through the property dict and replaces ``Parameter`` objects
+    with a Ref to that parameter's title.
+
+    """
+    def recursively_resolve_parameterised_properties(obj):
+        if isinstance(obj, Parameter):
+            return {"Ref": _namespace(resource_title, obj.title)}
+        if isinstance(obj, dict):
+            return {
+                key: recursively_resolve_parameterised_properties(value)
+                for key, value in obj.items()
+            }
+        if isinstance(obj, list):
+            return [
+                recursively_resolve_parameterised_properties(item)
+                for item in obj
+            ]
+        return obj
+    return recursively_resolve_parameterised_properties(properties)
 
 
 def _validate_properties(required_properties, properties):
