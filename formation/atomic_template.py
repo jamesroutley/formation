@@ -7,7 +7,6 @@ formation.atomic_template implements the AtomicTemplate class.
 
 from .base_template import BaseTemplate
 from .exception import InvalidPropertyError
-# from .output_specification import _OutputSpecification
 from .resource_specification import _ResourceSpecification
 from .parameter import Parameter
 
@@ -56,20 +55,11 @@ class AtomicTemplate(BaseTemplate):
 
     @property
     def _outputs(self):
-        # output_specification = _OutputSpecification()
         resource_specification = _ResourceSpecification()
-        attributes = resource_specification.get_attributes(self.resource_type)
-        outputs = {
-            self._namespace(attribute): {
-                "Value": {"Fn::GetAtt": [self.title, attribute]}
-            }
-            for attribute in attributes
-        }
-        # BUG: not all resources have a Ref value.
-        outputs[self._namespace("Ref")] = {
-            "Value": {"Ref": self.title}
-        }
-        return outputs
+        attribute_specification = resource_specification.get_attributes(
+            self.resource_type
+        )
+        return _get_outputs(attribute_specification, self.title)
 
     @property
     def _parameters(self):
@@ -114,6 +104,20 @@ class AtomicTemplate(BaseTemplate):
 
 def _namespace(resource_title, item_title):
     return "".join([resource_title, item_title])
+
+
+def _get_outputs(attribute_specification, resource_title):
+    outputs = {
+        _namespace(resource_title, attribute): {
+            "Value": {"Fn::GetAtt": [resource_title, attribute]}
+        }
+        for attribute in attribute_specification
+    }
+    # BUG: not all resources have a Ref value.
+    outputs[_namespace(resource_title, "Ref")] = {
+        "Value": {"Ref": resource_title}
+    }
+    return outputs
 
 
 def _get_parameters(properties, resource_title):
