@@ -36,7 +36,7 @@ class AtomicTemplate(BaseTemplate):
         properties = {} if properties is None else properties
         _validate_properties(self._required_properties, properties)
         self.properties = _get_properties(
-            self._required_properties, properties
+            self._required_properties.keys(), properties
         )
 
     def __repr__(self):
@@ -154,6 +154,18 @@ def _validate_properties(required_properties, properties):
 
 def _get_properties(required_properties, user_properties):
     """
+    Returns the resource's properties.
+
+    Adds a parameterised property for each required property not supplied by
+    the user.
+
+    :param required_properties: A list of required resource property names.
+    :type required_properties: list
+    :param user_properties: The properties supplied by the user.
+    :type user_properties: dict
+    :returns: The template's resource's properties.
+    :rtype: dict
+
     """
     properties = {
         prop: Parameter(title=prop)
