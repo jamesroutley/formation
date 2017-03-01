@@ -78,7 +78,7 @@ We see that creating a simple CloudFormation template containing a single VPC re
 
 .. code-block:: python
 
-  >>> from formation.atomic_template import AtomicTemplate
+  >>> from formation import AtomicTemplate
   >>> vpc = AtomicTemplate("VPC", "EC2::VPC")
   >>> print vpc.to_yaml()
   Outputs:
@@ -130,8 +130,7 @@ We can solve both these problems by modularising CloudFormation templates. Large
 
 .. code-block:: python
 
-  >>> from formation.atomic_template import AtomicTemplate
-  >>> from formation.template import Template
+  >>> from formation import AtomicTemplate, Template
 
   >>> vpc = AtomicTemplate("VPC", "EC2::VPC")
   >>> subnet = AtomicTemplate("Subnet", "EC2::Subnet")
