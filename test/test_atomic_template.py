@@ -6,6 +6,57 @@ from formation.parameter import Parameter
 import formation.atomic_template
 
 
+@pytest.mark.parametrize(
+    "required_properties,user_properties,expected_output",
+    [
+        (
+            ["CidrBlock"],
+            {},
+            {
+                "CidrBlock": Parameter("CidrBlock")
+            }
+        ),
+        (
+            ["CidrBlock"],
+            {"CidrBlock": "10.0.0.0/24"},
+            {
+                "CidrBlock": "10.0.0.0/24"
+            }
+        ),
+        (
+            ["CidrBlock"],
+            {"EnableDnsSupport": False},
+            {
+                "CidrBlock": Parameter("CidrBlock"),
+                "EnableDnsSupport": False
+            }
+        ),
+        (
+            ["CidrBlock"],
+            {"EnableDnsSupport": Parameter("MyEnableDnsSupportParam")},
+            {
+                "CidrBlock": Parameter("CidrBlock"),
+                "EnableDnsSupport": Parameter("MyEnableDnsSupportParam")
+            }
+        ),
+        (
+            ["CidrBlock"],
+            {"Tags": [{"Key": "Name", "Value": Parameter("VpcName")}]},
+            {
+                "CidrBlock": Parameter("CidrBlock"),
+                "Tags": [{"Key": "Name", "Value": Parameter("VpcName")}]
+            }
+        ),
+    ]
+)
+def test_get_properties(required_properties, user_properties, expected_output):
+    output = formation.atomic_template._get_properties(
+        required_properties,
+        user_properties
+    )
+    assert output == expected_output
+
+
 @pytest.mark.parametrize("test_input,expected_output", [
     # Flat dict of parameters.
     (

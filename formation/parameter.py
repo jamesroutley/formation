@@ -21,6 +21,21 @@ class Parameter(object):
             )
         )
 
+    def __eq__(self, other):
+        # HACK: This method to allow us to compare generated
+        # parameters to their expexted values in unit tests. It may have
+        # unintended consequences..
+        try:
+            return all((
+                self.title == other.title,
+                self.param_type == other.param_type,
+                self.default == other.default,
+                self.allowed_values == other.allowed_values,
+                self.description == other.description
+            ))
+        except AttributeError:
+            return False
+
     @property
     def template(self):
         """
