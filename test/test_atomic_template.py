@@ -91,6 +91,41 @@ def test_get_properties(required_properties, user_properties, expected_output):
     assert output == expected_output
 
 
+@pytest.mark.parametrize("properties,resource_title,expected_output", [
+    # Flat dict of parameters.
+    (
+        {"A": Parameter("A"), "B": Parameter("B"), "C": "C"},
+        "Title",
+        {"A": {"Ref": "TitleA"}, "B": {"Ref": "TitleB"}, "C": "C"}
+    ),
+    # List of parameters
+    (
+        {"A": [Parameter("B"), Parameter("C")]},
+        "Title",
+        {"A": [{"Ref": "TitleB"}, {"Ref": "TitleC"}]}
+    ),
+    # Nested dict of parameters
+    (
+        {"A": {"B": Parameter("B"), "C": Parameter("C")}},
+        "Title",
+        {"A": {"B": {"Ref": "TitleB"}, "C": {"Ref": "TitleC"}}}
+    ),
+    # Nested list and dict
+    (
+        {"A": {"B": [Parameter("C")], "D": {"E": Parameter("E")}}},
+        "Title",
+        {"A": {"B": [{"Ref": "TitleC"}], "D": {"E": {"Ref": "TitleE"}}}}
+    )
+])
+def test_resolve_parameterised_properties(
+        properties, resource_title, expected_output
+):
+    output = formation.atomic_template._resolve_parameterised_properties(
+        properties, resource_title
+    )
+    assert output == expected_output
+
+
 @pytest.mark.parametrize(
     "required_properties,user_properties,expected_output",
     [
