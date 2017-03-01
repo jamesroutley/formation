@@ -6,8 +6,13 @@ formation.output_specification does not contain anything public.
 """
 
 import json
+import os
 
-from . import REF_SPECIFICATION_PATH
+
+REF_SPECIFICATION_PATH = os.path.join(
+    os.path.dirname(__file__), "data", "refs.json"
+)
+
 
 
 class _OutputSpecification(object):

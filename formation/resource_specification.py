@@ -6,8 +6,13 @@ formation.resource_specification does not contain anything public.
 """
 
 import json
+import os
 
-from . import RESOURCE_SPECIFICATION_PATH
+
+RESOURCE_SPECIFICATION_PATH = os.path.join(
+    os.path.dirname(__file__), "data",
+    "CloudFormationResourceSpecification.json"
+)
 
 
 class _ResourceSpecification(object):
