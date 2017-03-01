@@ -152,14 +152,14 @@ def _validate_properties(required_properties, properties):
             )
 
 
-def _get_properties(required_properties, properties):
+def _get_properties(required_properties, user_properties):
     """
     """
     properties = {
         prop: Parameter(title=prop)
         for prop in required_properties
     }
-    properties.update(properties)
+    properties.update(user_properties)
     return properties
 
 
