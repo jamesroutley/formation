@@ -137,18 +137,18 @@ class AtomicTemplate(BaseTemplate):
 
 def _validate_properties(required_properties, properties):
     """
-    Raises an exception if required resource properties are not supplied.
+    Raises error if required resource-specific properties are not supplied.
     """
-    required_resource_properties = [
+    required_resource_specific_properties = [
         name
         for name, value in required_properties.items()
         if "Type" in value
     ]
-    for required_resource_property in required_resource_properties:
+    for required_resource_property in required_resource_specific_properties:
         if required_resource_property not in properties:
             raise InvalidPropertyError(
-                "The parameter '{0}' cannot be auto-assigned to a "
-                "Parameter.".format(required_resource_property)
+                "The resource-specific parameter '{0}' cannot be auto-assigned"
+                "to a Parameter.".format(required_resource_property)
             )
 
 
