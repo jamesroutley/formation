@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import os
 
-from formation.atomic_template import AtomicTemplate
+from formation import AtomicTemplate
 
 
 OUTPUT_FILE = os.path.join(
