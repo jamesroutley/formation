@@ -22,6 +22,7 @@ class BaseTemplate(object):
     """
 
     __metaclass__ = abc.ABCMeta
+    _template = None
 
     def to_json(
             self, indent=4, sort_keys=True, separators=(',', ': '),
