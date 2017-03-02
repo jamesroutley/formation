@@ -15,9 +15,13 @@ class Parameter(object):
 
     def __repr__(self):
         return (
-            "formation.parameter.Parameter(title={0}, param_type={1})".format(
+            "formation.parameter.Parameter(title={0}, param_type={1}, "
+            "default={2}, allowed_values={3}, description={4})".format(
                 self.title,
-                self.param_type
+                self.param_type,
+                self.default,
+                self.allowed_values,
+                self.description
             )
         )
 
