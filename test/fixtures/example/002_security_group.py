@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 from formation import AtomicTemplate, Parameter
 
 
@@ -25,4 +27,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print main()
+    print(main())
