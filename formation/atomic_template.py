@@ -49,18 +49,6 @@ class AtomicTemplate(BaseTemplate):
     def __repr__(self):
         return "AtomicTemplate({0})".format(self.title)
 
-    def _namespace(self, string):
-        """
-        Prepends the resource name to ``string`` and returns the result.
-
-        :param string: A string to prepend the resource name to.
-        :type string: str
-        :returns: A string with the resource name prepended to it.
-        :rtype: str
-
-        """
-        return "".join([self.title, string])
-
     @property
     def _outputs(self):
         resource_specification = _ResourceSpecification()
