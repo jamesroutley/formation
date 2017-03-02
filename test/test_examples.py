@@ -18,18 +18,15 @@ To add a new test case:
 
 import glob
 import imp
-import json
 import os
+
+import yaml
 
 import pytest
 
 
 EXAMPLE_DIR = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "fixtures", "example"
-))
-
-OUTPUT_DIR = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), "fixtures", "output"
 ))
 
 
@@ -41,13 +38,12 @@ def _get_examples():
     return glob.glob(pattern)
 
 
-def _get_expected_output(name):
+def _read_file(path):
     """
-    Returns the contents of the file OUTPUT_DIR/<name>.json.
+    Returns the contents of the file at ``path``.
 
     """
-    output_file = os.path.join(OUTPUT_DIR, ".".join([name, "json"]))
-    with open(output_file) as f:
+    with open(path) as f:
         expected_output = f.read()
     return expected_output
 
@@ -62,4 +58,5 @@ def test_example_formation_compiles_to_expected_json(example_file):
     name = os.path.basename(example_file).split(".")[0]
     module = imp.load_source(name, example_file)
     actual_output = module.main()
-    assert json.loads(actual_output) == json.loads(_get_expected_output(name))
+    expected_output = _read_file(module.OUTPUT_FILE)
+    assert yaml.safe_load(actual_output) == yaml.safe_load(expected_output)

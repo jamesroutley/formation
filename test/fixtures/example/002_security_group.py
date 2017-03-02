@@ -2,7 +2,16 @@
 
 from __future__ import print_function
 
+import os
+
 from formation import AtomicTemplate, Parameter
+
+
+OUTPUT_FILE = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "output",
+    "002_security_group.json"
+)
 
 
 def main():
