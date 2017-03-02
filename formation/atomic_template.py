@@ -16,13 +16,21 @@ class AtomicTemplate(BaseTemplate):
     """
     A template containing a single resource, its parameters and outputs.
 
+    Atomic templates represent a CloudFormation template containing a single
+    resource, and any parameters or outputs that resource may have. If an
+    AtomicTemplate is instantiated without any properties, Formation looks up
+    the properties required by the template's resource and paramaterises each
+    of them. Formation looks up all of the resource's outputs, and adds them to
+    the template. Users can overwrite default properties or add non-required
+    properties by passing them to ``properties`` argument.
+
     Atomic templates are the smallest unit within Formation, and they can be
     merged together to form more complex templates.
 
     :param name: The name given to the resource.
     :type name: str
     :param resource_type: The AWS resource type, without the ``AWS::`` prefix.
-        e.g. ``EC2::VPC`` or ``Lambda::Function``
+        e.g. ``EC2::VPC`` or ``Lambda::Function``.
     :type resource_type: str
     :param properties: A dict of properties to supply the resource.
     :type properties: dict
@@ -107,6 +115,10 @@ def _namespace(resource_title, item_title):
 
 
 def _get_outputs(attribute_specification, resource_title):
+    """
+    Returns the all available outputs for the template's resource.
+
+    """
     outputs = {
         _namespace(resource_title, attribute): {
             "Value": {"Fn::GetAtt": [resource_title, attribute]}
