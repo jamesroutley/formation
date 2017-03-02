@@ -25,6 +25,34 @@ class Parameter(object):
     """
     A CloudFormation template parameter.
 
+    Parameters in Formation are used differently to how they are used in native
+    CloudFormation. In Formation, Parameters should be instantiated as the
+    value of an AtomicTemplate's property, when that property should be
+    parameterised.
+
+    e.g::
+
+        >>> from formation import AtomicTemplate, Parameter
+        >>> vpc = AtomicTemplate(
+                "VPC",
+                "EC2::VPC",
+                properties={"EnableDnsSupport": Parameter()}
+            )
+
+    When ``to_json()`` or ``to_yaml()`` is run, Formation searches through each
+    AtomicTemplate's properties for Parameters. When they are found, they are
+    pulled out to the Parameters section of the template and a reference to the
+    Parameter's name is left in its place.
+
+    :param title: The title given to the Parameter in CloudFormation.
+    :type title: str
+    :param param_type: The Parameter's CloudFormation type.
+    :type param_type: str
+    :param kwargs: Keyword arguments for the rest of the Parameters optional
+        properties. See ``formation.parameter.OPTIONAL_PROPERTIES`` for the
+        list of supported properties.
+    :type kwargs: kwargs
+
     """
 
     def __init__(self, title, param_type="String", **kwargs):
@@ -42,8 +70,7 @@ class Parameter(object):
 
         """
         return (
-            "formation.parameter.Parameter(title='{0}', param_type='{1}', "
-            "**{2})".format(
+            "Parameter(title='{0}', param_type='{1}', **{2})".format(
                 self.title, self.param_type, self.optional_properties
             )
         )

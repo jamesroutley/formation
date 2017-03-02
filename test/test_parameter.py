@@ -9,21 +9,21 @@ from formation.parameter import Parameter
 @pytest.mark.parametrize("parameter,expected_output", [
     (
         Parameter("A"),
-        "formation.parameter.Parameter(title='A', param_type='String', **{})"
+        "Parameter(title='A', param_type='String', **{})"
     ),
     (
         Parameter("A", "Number"),
-        "formation.parameter.Parameter(title='A', param_type='Number', **{})"
+        "Parameter(title='A', param_type='Number', **{})"
     ),
     (
         Parameter("A", "Number", description="My description"),
-        "formation.parameter.Parameter(title='A', param_type='Number', "
+        "Parameter(title='A', param_type='Number', "
         "**{'description': 'My description'})"
     ),
     (
         Parameter("A", "Number", description="My description"),
-        "formation.parameter.Parameter(title='A', param_type='Number', "
-        "**{'description': 'My description'})"
+        "Parameter(title='A', param_type='Number', **{'description': "
+        "'My description'})"
     )
 ])
 def test_repr(parameter, expected_output):
