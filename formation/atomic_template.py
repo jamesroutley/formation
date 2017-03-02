@@ -48,8 +48,11 @@ class AtomicTemplate(BaseTemplate):
 
     def __repr__(self):
         return (
-            "AtomicTemplate(title={0}, resource_type={1}, properties={2})"
-            .format(self.title, self.resource_type, self._user_properties)
+            "AtomicTemplate(title='{0}', resource_type='{1}', properties={2})"
+            .format(
+                self.title, self.resource_type.lstrip("AWS::"),
+                self._user_properties
+            )
         )
 
     @property
