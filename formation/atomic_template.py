@@ -50,7 +50,7 @@ class AtomicTemplate(BaseTemplate):
         return (
             "AtomicTemplate(title='{0}', resource_type='{1}', properties={2})"
             .format(
-                self.title, self.resource_type.lstrip("AWS::"),
+                self.title, self.resource_type.replace("AWS::", ""),
                 self._user_properties
             )
         )
