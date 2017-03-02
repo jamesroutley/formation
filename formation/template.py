@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""
+formation.template implements the Template class.
+
+"""
+
+
 import collections
 import contextlib
 
