@@ -40,14 +40,17 @@ class AtomicTemplate(BaseTemplate):
     def __init__(self, title, resource_type, properties=None):
         self.title = title
         self.resource_type = "::".join(["AWS", resource_type])
-        properties = {} if properties is None else properties
-        _validate_properties(self._required_properties, properties)
+        self._user_properties = {} if properties is None else properties
+        _validate_properties(self._required_properties, self._user_properties)
         self.properties = _get_properties(
-            self._required_properties.keys(), properties
+            self._required_properties.keys(), self._user_properties
         )
 
     def __repr__(self):
-        return "AtomicTemplate({0})".format(self.title)
+        return (
+            "AtomicTemplate(title={0}, resource_type={1}, properties={2})"
+            .format(self.title, self.resource_type, self._user_properties)
+        )
 
     @property
     def _outputs(self):
