@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+formation.base_template implements the BaseTemplate class
+
+"""
+
 import abc
 import json
 
